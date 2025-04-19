@@ -65,7 +65,7 @@ const Upload = ({userid}) => {
     // Send data to backend
 
     try {
-      const response = await axios.post("http://localhost:3000/files/upload", userdata, {
+      const response = await axios.post("https://clouddrive-mtp9.onrender.com/files/upload", userdata, {
         headers: {
           "Content-Type": "application/json",
         },
@@ -80,14 +80,14 @@ const Upload = ({userid}) => {
 
 
   return (
-    <div className="flex flex-col justify-center items-center h-160 bg-gray-50">
-      <h1 className="text-3xl font-bold text-center -mt-20">Upload Files</h1>
-      <div className="flex flex-col justify-center items-center mt-10 space-y-4">
+    <div className="flex flex-col justify-center items-center h-200 lg:h-160 bg-gray-50">
+      <h1 className="text-3xl font-bold text-center   -mt-40 lg:-mt-20">Upload Files</h1>
+      <div className="flex flex-col justify-center items-center mt-10 lg:mt-10 space-y-4">
         <form onSubmit={submithandler} className="flex flex-col space-y-4">
           <input
             type="text"
             placeholder="File Name (e.g. myfile.jpg)"
-            className="border border-gray-300 p-4 rounded-lg w-130"
+            className="border border-gray-300 p-4 rounded-lg w-80 lg:w-130"
             value={fileName}
             onChange={(e) => setFileName(e.target.value)}
           />
@@ -95,14 +95,14 @@ const Upload = ({userid}) => {
           <input
             type="text"
             placeholder="Category (e.g. photo, video)"
-            className="border border-gray-300 p-4 rounded-lg w-130"
+            className="border border-gray-300 p-4 rounded-lg w-80 lg:w-130"
             value={category}
             onChange={(e) => setCategory(e.target.value.toLowerCase())}
           />
 
           <input
             type="file"
-            className="cursor-pointer border border-gray-300 p-3 w-130 rounded-lg file:mr-60 file:py-2 file:px-4 file:border-0 file:bg-blue-500 file:text-white"
+            className="cursor-pointer border border-gray-300 p-3 w-80 lg:w-130 rounded-lg file:mr-60 file:py-2 file:px-4 file:border-0 file:bg-blue-500 file:text-white"
             onChange={(e) => {
               const file = e.target.files[0];
               setUploadFile(file);
@@ -112,7 +112,7 @@ const Upload = ({userid}) => {
 
           <button
             type="submit"
-            className="ml-30 cursor-pointer bg-blue-500 text-white p-2 rounded-lg w-64 hover:bg-blue-600 transition duration-200 mt-2"
+            className=" ml-8 lg:ml-30 cursor-pointer bg-blue-500 text-white p-2 rounded-lg w-64 hover:bg-blue-600 transition duration-200 mt-2"
           >
             Upload
           </button>

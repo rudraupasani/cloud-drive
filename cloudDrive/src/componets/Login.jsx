@@ -1,90 +1,100 @@
 import { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
-import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
-
 
 const Login = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const navigate = useNavigate();
 
-      const navigate = useNavigate();
+  const handleSubmit = (e) => {
+    e.preventDefault();
 
+    const UserData = { email, password };
 
-      const handleSubmit = (e) => {
-        e.preventDefault();
-      
-        const UserData = {
-          email: email,
-          password: password,
-        };
-      
-        const loginUser = async () => {
-          try {
-            const response = await axios.post("http://localhost:3000/users/login", UserData);
-            console.log(response.data);
-            const token = response.data.token; 
-            const userId = response.data.userId;
-            if (response.status === 200) {
-              toast.success("User logged in successfully");
-              localStorage.setItem("token", token);
-              localStorage.setItem("userId", userId);
-              navigate("/"); // Redirect to home page after successful login
-              setEmail("");
-              setPassword("");
-            } else {
-                toast.error("User login failed");
-            }
-          } catch (error) {
-            toast.error(error.response?.data?.error || "Error logging in user");
-          }
-        };
-      
-        // **Call loginUser here**
-        loginUser();
-      };
-      
+    const loginUser = async () => {
+      try {
+        const response = await axios.post(
+          "https://clouddrive-mtp9.onrender.com/users/login",
+          UserData
+        );
+        const { token, userId } = response.data;
+
+        if (response.status === 200) {
+          toast.success("User logged in successfully");
+          localStorage.setItem("token", token);
+          localStorage.setItem("userId", userId);
+          navigate("/");
+          setEmail("");
+          setPassword("");
+        } else {
+          toast.error("User login failed");
+        }
+      } catch (error) {
+        toast.error(error.response?.data?.error || "Error logging in user");
+      }
+    };
+
+    loginUser();
+  };
+
   return (
-    <div className="bg-purple-400 h-210 lg:h-screen flex justify-center items-center">
-      <div className="bg-gray-100 h-110 w-90 p-4  lg:p-8 rounded-xl shadow-2xl lg:w-[34rem] lg:h-130 lg:py-12 ">
-        <h2 className="text-5xl font-bold mb-8 text-center">Login</h2>
-        <form onSubmit={handleSubmit} className="flex flex-col">
-          <label className="text-gray-700 mb-1">Email</label>
-          <input
-            type="email"
-            name="email"
-            placeholder="Enter your email"
-            className="border border-gray-300 p-4 mb-4 rounded-md"
-            value={email}
-            onChange={(e) => {
-              setEmail(e.target.value);
-            }}
-            required
-          />
+    <div className="min-h-screen bg-gradient-to-br from-gray-900 to-blue-900 flex items-center justify-center px-4">
+      <div className="bg-white w-full max-w-md p-8 rounded-2xl shadow-2xl ">
+        <h2 className="text-3xl font-bold text-center text-gray-800 mb-6">Welcome Back 👋</h2>
+        <p className="text-center text-gray-500 mb-8 text-sm">
+          Enter your credentials to access your cloud drive.
+        </p>
+        <form onSubmit={handleSubmit} className="space-y-5">
+          <div>
+            <label className="text-gray-700 block mb-1">Email</label>
+            <input
+              type="email"
+              name="email"
+              className="w-full px-4 py-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-400 transition"
+              placeholder="Enter your email"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              required
+            />
+          </div>
 
-          <label className="text-gray-700 mb-1">Password</label>
-          <input
-            type="password"
-            name="password"
-            placeholder="Enter your password"
-            className="border border-gray-300 p-4 mb-4 rounded-md"
-            value={password}
-            onChange={(e) => {
-              setPassword(e.target.value);
-            }}
-            required
-          />
+          <div>
+            <label className="text-gray-700 block mb-1">Password</label>
+            <input
+              type="password"
+              name="password"
+              className="w-full px-4 py-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-400 transition"
+              placeholder="Enter your password"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              required
+            />
+          </div>
 
           <button
             type="submit"
-            className="cursor-pointer bg-blue-500 text-white py-4 rounded hover:bg-blue-600 transition-all"
+            className="w-full py-3 bg-blue-600 hover:bg-blue-700 text-white font-semibold rounded-md transition duration-300"
           >
             Login
           </button>
         </form>
-        <p className='text-center mt-4'>Don't have an account? <Link to="/register" className='text-blue-500 cursor-pointer'>Sign Up </Link></p>
-        <p className='text-center mt-4'>Forgot Password? <Link to="" className='text-blue-500'>Reset</Link></p>
+
+        <div className="text-center mt-6 text-sm text-gray-600">
+          <p>
+            Don’t have an account?{" "}
+            <Link to="/register" className="text-blue-500 hover:underline">
+              Sign Up
+            </Link>
+          </p>
+          <p className="mt-2">
+            Forgot Password?{" "}
+            <Link to="#" className="text-blue-500 hover:underline">
+              Reset
+            </Link>
+          </p>
+        </div>
       </div>
     </div>
   );

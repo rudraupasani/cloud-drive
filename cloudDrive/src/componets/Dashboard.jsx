@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import { CgProfile } from "react-icons/cg";
 import { FaBars } from "react-icons/fa";
@@ -8,6 +8,7 @@ const Dashboard = () => {
   const navigate = useNavigate();
   const [inputValue, setInputValue] = useState('');
   const [conformLogout, setConformLogout] = useState(false);
+  const [showTOggle, setShowToggle] = useState(false);
 
   const handleSearch = (e) => {
     e.preventDefault();
@@ -17,7 +18,7 @@ const Dashboard = () => {
 
   return (
     <>
-      <div className='w-110 lg:w-full h-22 bg-white border-b-gray-200 border-b-2 shadow-md flex items-center justify-between px-4'>
+      <div className='w-screen lg:w-full h-22 bg-white border-b-gray-200 border-b-2 shadow-md flex items-center justify-between px-4'>
         <form onSubmit={handleSearch}>
           <div className='flex items-center'>
             <input
@@ -35,7 +36,23 @@ const Dashboard = () => {
             </button>
           </div>
         </form>
-        <button className='lg:hidden'><FaBars className='text-2xl -ml-30' /></button>
+        <button 
+        onClick={() => setShowToggle(!showTOggle)}
+        className='lg:hidden'><FaBars className='text-2xl -ml-30' /></button>
+
+        {
+          showTOggle && (
+            <div className='absolute top-22 left-4 w-100 bg-white shadow-md rounded-lg p-4 z-50'>
+              <Link to="/" className='block py-2 px-4 text-md font-bold bg-gray-50 hover:bg-blue-400 hover:text-white'>Home</Link>
+              <Link to="/upload" className='block mt-1 py-2 px-4 text-md font-bold bg-gray-50 hover:bg-blue-400 hover:text-white'>Upload</Link>
+              <Link to="/files" className='block mt-1 py-2 px-4 text-md font-bold bg-gray-50 hover:bg-blue-400 hover:text-white'>Files</Link>
+              
+
+            </div>
+          )
+        }
+
+        
 
 
         <div className='flex items-center'>
@@ -65,7 +82,7 @@ const Dashboard = () => {
       
     {conformLogout && (
       <div className='fixed inset-0 flex items-center justify-center bg-opacity-50 z-50 '>
-        <div className='bg-amber-100 p-16 rounded-4xl shadow-lg '>
+        <div className='bg-amber-100 p-8 rounded-4xl shadow-lg '>
           <h2 className='text-lg font-semibold mb-4'>Are you sure you want to logout?</h2>
           <div className='flex justify-end'>
             <button

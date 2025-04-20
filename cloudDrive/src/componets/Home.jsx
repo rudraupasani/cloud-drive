@@ -2,11 +2,13 @@ import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import { Link } from 'react-router-dom';
 import { Trash2, Pencil } from 'lucide-react';
+import { toast } from 'react-toastify';
 
 const Home = () => {
   const [files, setFiles] = useState([]);
-  const [searchQuery, setsearchQuery] = useState('');
-  const [filteredFiles, setFilteredFiles] = useState([]);
+  const [searchQuery, setSearchQuery] = useState('');
+  const [confirmDelete, setConfirmDelete] = useState(false);
+  const [fileToDelete, setFileToDelete] = useState(null);
 
   const fetchFiles = async () => {
     try {
@@ -17,13 +19,8 @@ const Home = () => {
           "userId": userId,
         },
       });
-      console.log("Files:", response.data);
+
       setFiles(response.data);
-      setFilteredFiles(
-        response.data.filter((file) =>
-          file.filename.toLowerCase().includes(searchQuery.toLowerCase())
-        )
-      );
     } catch (error) {
       console.error("Error fetching files:", error);
     }
@@ -33,54 +30,42 @@ const Home = () => {
     fetchFiles();
   }, []);
 
-  const handleDelete = (fileId) => {
-    console.log("Delete clicked for file:", fileId);
-    // Add your delete logic here
+  const deleteFile = async (fileId) => {
+    try {
+      const res = await axios.post(`http://localhost:3000/files/delete/${fileId}`);
+      if (res.status === 200) {
+        toast.success("File deleted successfully");
+        fetchFiles(); // refresh file list
+      } else {
+        toast.error("Failed to delete file");
+      }
+    } catch (err) {
+      console.error("Error deleting file:", err);
+      toast.error("Error deleting file");
+    }
   };
 
   const handleRename = (fileId, filename) => {
     console.log("Rename clicked for file:", fileId, filename);
-    // Add your rename logic here
+    // TODO: Add rename logic
   };
 
   const renderPreview = (file) => {
     const ext = file.filename.split('.').pop().toLowerCase();
 
     if (["jpg", "jpeg", "png", "gif", "webp"].includes(ext)) {
-      return (
-        <img
-          src={file.url}
-          alt={file.filename}
-          className="w-full h-38 object-cover group-hover:scale-105 transition-transform duration-300"
-        />
-      );
+      return <img src={file.url} alt={file.filename} className="w-full h-38 object-cover group-hover:scale-105 transition-transform duration-300" />;
     }
 
     if (["mp4", "webm", "ogg"].includes(ext)) {
-      return (
-        <video
-          src={file.url}
-          controls
-          className="w-full h-38 object-cover group-hover:scale-105 transition-transform duration-300"
-        />
-      );
+      return <video src={file.url} controls className="w-full h-38 object-cover group-hover:scale-105 transition-transform duration-300" />;
     }
 
     if (ext === "pdf") {
-      return (
-        <iframe
-          src={file.url}
-          title={file.filename}
-          className="w-full h-38 object-cover group-hover:scale-105 transition-transform duration-300"
-        />
-      );
+      return <iframe src={file.url} title={file.filename} className="w-full h-38 object-cover group-hover:scale-105 transition-transform duration-300" />;
     }
 
-    return (
-      <div className="w-full h-38 flex items-center justify-center bg-gray-200 text-gray-500 text-sm">
-        Unsupported file
-      </div>
-    );
+    return <div className="w-full h-38 flex items-center justify-center bg-gray-200 text-gray-500 text-sm">Unsupported file</div>;
   };
 
   return (
@@ -93,10 +78,11 @@ const Home = () => {
       </div>
 
       <div className="h-200 w-screen lg:h-142 lg:w-full bg-gradient-to-br from-gray-100 to-gray-200 py-10 px-5 flex flex-wrap justify-center gap-10 overflow-x-hidden">
-        {files && files.length > 0 ? (
+        {files.length > 0 ? (
           files.map((file) => (
             <div
               key={file._id}
+              onClick={() => window.open(file.url, "_blank")}
               className="relative bg-white h-80 w-90 lg:h-72 lg:w-64 rounded-2xl shadow-xl hover:shadow-2xl transition-shadow duration-300 overflow-hidden group"
             >
               {renderPreview(file)}
@@ -128,7 +114,8 @@ const Home = () => {
                     <button
                       onClick={(e) => {
                         e.stopPropagation();
-                        handleDelete(file._id);
+                        setFileToDelete(file._id);
+                        setConfirmDelete(true);
                       }}
                       className="p-2 rounded-full hover:bg-red-100 transition cursor-pointer"
                       title="Delete"
@@ -146,6 +133,36 @@ const Home = () => {
           </div>
         )}
       </div>
+
+      {/* Delete Confirmation Modal */}
+      {confirmDelete && (
+        <div className='fixed inset-0 flex items-center justify-center bg-opacity-60 z-50'>
+          <div className='bg-white p-8 rounded-2xl shadow-lg max-w-md w-full'>
+            <h2 className='text-lg font-semibold mb-4 text-gray-800'>Are you sure you want to delete this file?</h2>
+            <div className='flex justify-end gap-4 mr-25'>
+              <button
+                onClick={() => {
+                  setConfirmDelete(false);
+                  setFileToDelete(null);
+                }}
+                className='bg-gray-300 text-gray-700 py-2 px-4 rounded-lg cursor-pointer'
+              >
+                Cancel
+              </button>
+              <button
+                onClick={() => {
+                  deleteFile(fileToDelete);
+                  setConfirmDelete(false);
+                  setFileToDelete(null);
+                }}
+                className='bg-red-500 text-white py-2 px-4 rounded-lg cursor-pointer'
+              >
+                Delete
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </>
   );
 };

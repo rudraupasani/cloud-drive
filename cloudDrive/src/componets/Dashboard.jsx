@@ -38,7 +38,7 @@ const Dashboard = () => {
         </form>
         <button 
         onClick={() => setShowToggle(!showTOggle)}
-        className='lg:hidden'><FaBars className='text-2xl -ml-30' /></button>
+        className='ml-15 sm:-ml:10 md:-ml-60 lg:hidden'><FaBars className='text-2xl -ml-30' /></button>
 
         {
           showTOggle && (

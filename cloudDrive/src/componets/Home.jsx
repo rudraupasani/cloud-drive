@@ -32,7 +32,7 @@ const Home = () => {
 
   const deleteFile = async (fileId) => {
     try {
-      const res = await axios.post(`http://localhost:3000/files/delete`, { id: fileId }, {
+      const res = await axios.post(`https://clouddrive-mtp9.onrender.com/files/delete`, { id: fileId }, {
         headers: {
           "Content-Type": "application/json",
           "userId": localStorage.getItem("userId"),
@@ -83,7 +83,7 @@ const Home = () => {
         </p>
       </div>
 
-      <div className="h-200 w-screen lg:h-142 lg:w-full bg-gradient-to-br from-gray-100 to-gray-200 py-10 px-5 flex flex-wrap justify-center gap-10 overflow-x-hidden">
+      <div className="h-screen w-screen xl:h-screen lg:h-142 lg:w-full bg-gradient-to-br from-gray-100 to-gray-200 py-10 px-5 flex flex-wrap justify-center gap-10 overflow-x-hidden">
         {files.length > 0 ? (
           files.map((file) => (
             <div
@@ -107,16 +107,6 @@ const Home = () => {
                   </a>
 
                   <div className="flex gap-2">
-                    <button
-                      onClick={(e) => {
-                        e.stopPropagation();
-                        handleRename(file._id, file.filename);
-                      }}
-                      className="p-2 rounded-full hover:bg-blue-100 transition cursor-pointer"
-                      title="Rename"
-                    >
-                      <Pencil size={18} className="text-blue-600" />
-                    </button>
                     <button
                       onClick={(e) => {
                         e.stopPropagation();

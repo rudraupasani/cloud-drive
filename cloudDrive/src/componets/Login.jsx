@@ -19,13 +19,18 @@ const Login = () => {
           "https://clouddrive-mtp9.onrender.com/users/login",
           UserData
         );
-        const { token, userId , username , email } = response.data;
+        const { token, userId  } = response.data;
+
+
+        const username = response.data.username;
+        const email = response.data.email;
 
         if (response.status === 200) {
           toast.success("User logged in successfully");
           localStorage.setItem("token", token);
           localStorage.setItem("userId", userId);
-          localStorage.setItem("username", username);
+          localStorage.setItem("userData", JSON.stringify({ username, email }));
+
           navigate("/");
           setEmail("");
           setPassword("");

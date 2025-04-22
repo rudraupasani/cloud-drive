@@ -32,7 +32,13 @@ const Home = () => {
 
   const deleteFile = async (fileId) => {
     try {
-      const res = await axios.post(`http://localhost:3000/files/delete/${fileId}`);
+      const res = await axios.post(`http://localhost:3000/files/delete`, { id: fileId }, {
+        headers: {
+          "Content-Type": "application/json",
+          "userId": localStorage.getItem("userId"),
+        },
+      }
+      );
       if (res.status === 200) {
         toast.success("File deleted successfully");
         fetchFiles(); // refresh file list

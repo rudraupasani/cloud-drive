@@ -31,8 +31,8 @@ filerouter.get("/allfiles", async (req, res) => {
     }
   });
 
- filerouter.post("/delete", async (req, res) => {
-    const { id } = req.params;
+  filerouter.post("/delete", async (req, res) => {
+    const { id } = req.body;
     try {
         const file = await filemodel.findByIdAndDelete(id);
         if (!file) {
@@ -43,7 +43,7 @@ filerouter.get("/allfiles", async (req, res) => {
         console.error("Error deleting file:", error);
         res.status(500).json({ message: "Error deleting file" });
     }
-}
-);   
+});
+;   
     
 module.exports = filerouter;

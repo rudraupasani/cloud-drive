@@ -19,8 +19,7 @@ const Login = () => {
           "https://clouddrive-mtp9.onrender.com/users/login",
           UserData
         );
-        const { token, userId  } = response.data;
-
+        const { token, userId } = response.data;
 
         const username = response.data.username;
         const email = response.data.email;
@@ -48,7 +47,9 @@ const Login = () => {
   return (
     <div className="min-h-screen bg-gradient-to-br from-gray-900 to-blue-900 flex items-center justify-center px-4">
       <div className="bg-white w-full max-w-md p-8 rounded-2xl shadow-2xl ">
-        <h2 className="text-3xl font-bold text-center text-gray-800 mb-6">Welcome Back 👋</h2>
+        <h2 className="text-3xl font-bold text-center text-gray-800 mb-6">
+          Welcome Back 👋
+        </h2>
         <p className="text-center text-gray-500 mb-8 text-sm">
           Enter your credentials to access your cloud drive.
         </p>

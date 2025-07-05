@@ -1,8 +1,10 @@
 const mongoose = require("mongoose");
+const dotenv = require('dotenv');
+dotenv.config();
 
 mongoose
   .connect(
-    "mongodb+srv://rudra:39033903@cloud.iyhgvm2.mongodb.net/?retryWrites=true&w=majority&appName=cloud"
+    process.env.MONGO_DB_URI 
   )
   .then(() => {
     console.log("Connected to MongoDB");

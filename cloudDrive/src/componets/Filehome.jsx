@@ -87,7 +87,7 @@ const Filehome = () => {
   });
 
   return (
-    <div className="w-full h-screen lg:h-162 overflow-y-auto bg-gray-100 px-4 py-6">
+    <div className="w-full h-screen lg:h-182 overflow-y-auto bg-gray-100 px-4 py-6">
       {/* Dropdown */}
       <div className="flex justify-center mb-6">
         <select

@@ -83,7 +83,7 @@ const Home = () => {
         </p>
       </div>
 
-      <div className="h-screen w-screen xl:h-screen lg:h-142 lg:w-full bg-gradient-to-br from-gray-100 to-gray-200 py-10 px-5 flex flex-wrap justify-center gap-10 overflow-x-hidden">
+      <div className="h-screen w-screen  lg:h-162 lg:w-full bg-gradient-to-br from-gray-100 to-gray-200 py-10 px-5 flex flex-wrap justify-center gap-10 overflow-x-hidden">
         {files.length > 0 ? (
           files.map((file) => (
             <div

@@ -52,9 +52,6 @@ const Dashboard = () => {
           )
         }
 
-        
-
-
         <div className='flex items-center'>
           <div className='flex items-center py-1 px-2 rounded-lg'>
 
@@ -79,37 +76,33 @@ const Dashboard = () => {
         </div>
       </div>
 
-      
-    {conformLogout && (
-      <div className='fixed inset-0 flex items-center justify-center bg-opacity-50 z-50 '>
-        <div className='bg-amber-100 p-8 rounded-4xl shadow-lg '>
-          <h2 className='text-lg font-semibold mb-4'>Are you sure you want to logout?</h2>
-          <div className='flex justify-end'>
-            <button
-              onClick={() => setConformLogout(false)}
-              className='bg-gray-300 text-gray-700 py-2 px-4 rounded-lg mr-4  cursor-pointer'
-            >
-              Cancel
-            </button>
-            <button
-              onClick={() => {
-                localStorage.removeItem('token');
-                toast.success("User logged out successfully");
-                navigate("/login");
-              }}
-              className='bg-red-500 text-white py-2 px-4 rounded-lg mr-10 cursor-pointer'
-            >
-              Logout
-            </button>
+      {conformLogout && (
+        <div className='fixed inset-0 flex items-center justify-center bg-opacity-50 z-50 '>
+          <div className='bg-amber-100 p-8 rounded-4xl shadow-lg '>
+            <h2 className='text-lg font-semibold mb-4'>Are you sure you want to logout?</h2>
+            <div className='flex justify-end'>
+              <button
+                onClick={() => setConformLogout(false)}
+                className='bg-gray-300 text-gray-700 py-2 px-4 rounded-lg mr-4  cursor-pointer'
+              >
+                Cancel
+              </button>
+              <button
+                onClick={() => {
+                  localStorage.removeItem('token');
+                  toast.success("User logged out successfully");
+                  navigate("/login");
+                }}
+                className='bg-red-500 text-white py-2 px-4 rounded-lg mr-10 cursor-pointer'
+              >
+                Logout
+              </button>
+            </div>
           </div>
         </div>
-      </div>
-    )
-  }
+      )}
     </>
-
   );
 };
-  
 
 export default Dashboard;

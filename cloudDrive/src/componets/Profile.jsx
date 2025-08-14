@@ -1,10 +1,8 @@
 import React, { useEffect, useState } from "react";
-
 import axios from "axios";
 import { toast } from "react-toastify";
 
 const Profile = () => {
-  // Get all user data
   const initialUserData = localStorage.getItem("userData")
     ? JSON.parse(localStorage.getItem("userData"))
     : { username: "User", email: "", profileImage: "" };
@@ -105,12 +103,10 @@ const Profile = () => {
           onSubmit={handleSubmit}
           className="grid grid-cols-1 md:grid-cols-3 gap-8 p-8"
         >
-          {/* Profile Info Section */}
           <div className="flex flex-col items-center gap-4">
-            {/* Image Preview */}
             <div className="relative group">
               <img
-                src={preview || "/default-avatar.png"}
+                src={preview || "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRWhb4OhEFu7tfWc4e_iY3KiSSAwjIm6LD5TA&s"}
                 alt="Profile"
                 className="w-28 h-28 rounded-full object-cover border-4 border-white shadow-md transition-transform group-hover:scale-105"
               />
@@ -137,7 +133,6 @@ const Profile = () => {
             />
           </div>
 
-          {/* Info and Actions */}
           <div className="md:col-span-2 flex flex-col justify-between space-y-6">
             <div>
               <h2 className="text-lg font-semibold text-gray-800 mb-2">
@@ -167,7 +162,6 @@ const Profile = () => {
         </form>
       </div>
 
-      {/* Latest Upload Section */}
       <div className="max-w-4xl mx-auto mt-8 bg-white rounded-3xl shadow-2xl p-6">
         <h2 className="text-lg font-semibold text-gray-800 mb-4">
           Latest Upload

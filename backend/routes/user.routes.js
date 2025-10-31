@@ -29,6 +29,9 @@ router.post("/register", async (req, res) => {
     return res.status(500).json({ error: "Error registering user" });
   }
 });
+
+
+
 //login user
 router.post("/login", async (req, res) => {
   const { email, password } = req.body;

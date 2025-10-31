@@ -2,8 +2,8 @@ import React, { useState } from "react";
 import axios from "axios";
 import { toast } from "react-toastify";
 
-const cloudName = "rudraupasani"; // 👉 replace this
-const uploadPreset = "react-upload-preset"; // 👉 replace this
+const cloudName = "rudraupasani"; // 👉 replace with your Cloudinary cloud name
+const uploadPreset = "react-upload-preset"; // 👉 replace with your Cloudinary preset
 
 const Upload = () => {
   const [uploadFile, setUploadFile] = useState(null);
@@ -21,7 +21,7 @@ const Upload = () => {
     const formData = new FormData();
     formData.append("file", uploadFile);
     formData.append("upload_preset", uploadPreset);
-    formData.append("folder", category); // Optional folder structure
+    formData.append("folder", category);
 
     try {
       const cloudinaryRes = await axios.post(
@@ -30,8 +30,6 @@ const Upload = () => {
       );
 
       const uploadedUrl = cloudinaryRes.data.secure_url;
-      console.log("Cloudinary Upload URL:", uploadedUrl);
-
       toast.success("File uploaded successfully!");
 
       const userdata = {
@@ -41,19 +39,19 @@ const Upload = () => {
         userid: localStorage.getItem("userId"),
       };
 
-      // Send to backend
-      const response = await axios.post("https://clouddrive-mtp9.onrender.com/files/upload", userdata, {
-        headers: {
-          "Content-Type": "application/json",
-        },
-      });
-      console.log("Response from backend:", response.data);
+      await axios.post(
+        "https://clouddrive-mtp9.onrender.com/files/upload",
+        userdata,
+        {
+          headers: {
+            "Content-Type": "application/json",
+          },
+        }
+      );
 
-      // Reset
       setUploadFile(null);
       setCategory("");
       setFileName("");
-
     } catch (err) {
       console.error("Upload error:", err);
       toast.error("Upload failed!");
@@ -61,38 +59,59 @@ const Upload = () => {
   };
 
   return (
-    <div className="flex flex-col justify-center items-center h-200 lg:h-160 bg-gray-50">
-      <h1 className="text-3xl font-bold text-center -mt-40 lg:-mt-20">Upload Files</h1>
-      <div className="flex flex-col justify-center items-center mt-10 lg:mt-10 space-y-4">
-        <form onSubmit={submithandler} className="flex flex-col space-y-4">
-          <input
-            type="text"
-            placeholder="File Name"
-            className="border border-gray-300 p-4 rounded-lg w-80 lg:w-130"
-            value={fileName}
-            onChange={(e) => setFileName(e.target.value)}
-          />
-          <input
-            type="text"
-            placeholder="Category (e.g. photo, video)"
-            className="border border-gray-300 p-4 rounded-lg w-80 lg:w-130"
-            value={category}
-            onChange={(e) => setCategory(e.target.value.toLowerCase())}
-          />
-          <input
-            type="file"
-            className="cursor-pointer border border-gray-300 p-3 w-80 lg:w-130 rounded-lg file:mr-60 file:py-2 file:px-4 file:border-0 file:bg-blue-500 file:text-white"
-            onChange={(e) => {
-              const file = e.target.files[0];
-              setUploadFile(file);
-              if (file) setFileName(file.name);
-            }}
-          />
+    <div className="min-h-screen flex flex-col items-center justify-center bg-gradient-to-br from-gray-50 to-gray-100 px-4">
+      {/* Header */}
+      <div className="text-center mb-8">
+        <h1 className="text-3xl font-semibold text-gray-800">Upload File</h1>
+        <p className="text-gray-500 mt-2">
+          Securely store your files in{" "}
+          <span className="text-blue-600 font-medium">CloudDrive</span>
+        </p>
+      </div>
+
+      {/* Upload Card */}
+      <div className="bg-white/60 backdrop-blur-lg border border-gray-200 shadow-lg hover:shadow-xl transition-all duration-300 rounded-2xl p-8 w-full max-w-md">
+        <form onSubmit={submithandler} className="flex flex-col space-y-5">
+          <div>
+            <label className="text-sm font-medium text-gray-700">File Name</label>
+            <input
+              type="text"
+              placeholder="Enter file name"
+              className="mt-2 w-full border border-gray-300 rounded-xl px-4 py-3 text-gray-700 focus:ring-2 focus:ring-blue-400 focus:outline-none"
+              value={fileName}
+              onChange={(e) => setFileName(e.target.value)}
+            />
+          </div>
+
+          <div>
+            <label className="text-sm font-medium text-gray-700">Category</label>
+            <input
+              type="text"
+              placeholder="e.g. photo, video, document"
+              className="mt-2 w-full border border-gray-300 rounded-xl px-4 py-3 text-gray-700 focus:ring-2 focus:ring-blue-400 focus:outline-none"
+              value={category}
+              onChange={(e) => setCategory(e.target.value.toLowerCase())}
+            />
+          </div>
+
+          <div>
+            <label className="text-sm font-medium text-gray-700">Select File</label>
+            <input
+              type="file"
+              className="mt-2 w-full border border-gray-300 rounded-xl px-4 py-3 cursor-pointer file:cursor-pointer file:bg-blue-500 file:text-white file:border-none file:rounded-lg file:px-4 file:py-2 hover:file:bg-blue-600 transition-all"
+              onChange={(e) => {
+                const file = e.target.files[0];
+                setUploadFile(file);
+                if (file) setFileName(file.name);
+              }}
+            />
+          </div>
+
           <button
             type="submit"
-            className="ml-8 lg:ml-30 cursor-pointer bg-blue-500 text-white p-2 rounded-lg w-64 hover:bg-blue-600 transition duration-200 mt-2"
+            className="w-full py-3 rounded-xl bg-gradient-to-r from-blue-600 to-blue-500 text-white font-medium hover:from-blue-700 hover:to-blue-600 transition-all duration-300"
           >
-            Upload
+            Upload File
           </button>
         </form>
       </div>
